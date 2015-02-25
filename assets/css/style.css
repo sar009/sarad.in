@@ -1,0 +1,16 @@
+html,
+body {
+    margin-left: 0;
+    margin-top: 0;
+    background-color: #fff;
+    font-family: 'Oxygen', sans-serif !important;
+    height: 100%;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+textarea {
+    resize: none;
+}

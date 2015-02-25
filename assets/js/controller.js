@@ -1,3 +1,3 @@
-/**
- * Created by sarad on 25-02-2015.
- */
+angular.module('sarad.controllers', [])
+    .controller("home", function($scope) {
+    });

@@ -96,7 +96,7 @@ module.exports = function(grunt) {
                 stoponwarning: true,
                 relaxerror: []
             },
-            files: ['assets/templates/*.html']
+            files: ['assets/templates/*.html', 'dev_index.html']
         },
         'string-replace': {
             app: {
@@ -112,6 +112,9 @@ module.exports = function(grunt) {
                     }, {
                         pattern: '<link href="assets/css/bootstrap-theme.min.css" rel="stylesheet">',
                         replacement: '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">'
+                    }, {
+                        pattern: '<link href="assets/css/font-awesome.min.css" rel="stylesheet">',
+                        replacement: '<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">'
                     }, {
                         pattern: '<link href="assets/css/style.css" rel="stylesheet">',
                         replacement: '<link href="minified_assets/css/style.css" rel="stylesheet">'
@@ -138,6 +141,8 @@ module.exports = function(grunt) {
 
     // Load plugins here.
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-bootlint');
+    grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -157,5 +162,10 @@ module.exports = function(grunt) {
         'htmlmin',
         'string-replace',
         'cssmin'
+    ]);
+    grunt.registerTask('lint', [
+        'jshint',
+        'csslint',
+        'bootlint'
     ]);
 };

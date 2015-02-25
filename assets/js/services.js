@@ -1,3 +1,5 @@
-/**
- * Created by sarad on 25-02-2015.
- */
+angular.module('sarad.services', [])
+    .factory('saradApiService', function($http, $q) {
+        var saradApi = {};
+        return saradApi;
+    });

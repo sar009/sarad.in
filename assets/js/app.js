@@ -1,3 +1,5 @@
-/**
- * Created by sarad on 25-02-2015.
- */
+angular.module('sarad', [
+    'sarad.routers',
+    'sarad.controllers',
+    'sarad.services'
+]);

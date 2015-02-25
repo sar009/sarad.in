@@ -1,14 +1,13 @@
 server {
-	listen 0.0.0.0:80;
-	listen [::]:80 default_server ipv6only=on;
-	server_name 52.11.4.48 www.sarad.in sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
+    listen 0.0.0.0:80;
+    listen [::]:80 default_server ipv6only=on;
+    server_name 52.11.4.48 www.sarad.in sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
 
-	# no security problem here, since / is alway passed to upstream
-	root /home/sarad/sarad.in;
+    root /home/sarad/sarad.in;
     index index.html index.htm;
 
-	location / {
-		alias /home/sarad/sarad.in/;
-		autoindex off;
-	}
+    location / {
+    	alias /home/sarad/sarad.in/;
+    	autoindex off;
+    }
 }
