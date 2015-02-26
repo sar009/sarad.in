@@ -1,15 +1,12 @@
 module.exports = function(grunt) {
 
-    // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
-        // Task configuration goes here.
         cssmin: {
             app: {
                 files: {
                     'minified_assets/css/style.min.css': [
-                        'assets/css/style.min.css'
+                        'assets/css/style.css'
                     ]
                 }
             }
@@ -41,7 +38,8 @@ module.exports = function(grunt) {
                         'assets/js/app.js',
                         'assets/js/router.js',
                         'assets/js/controller.js',
-                        'assets/js/services.js'
+                        'assets/js/services.js',
+                        'assets/js/lib/StackBlur.js'
                     ]
                 }
             }
@@ -125,7 +123,7 @@ module.exports = function(grunt) {
                         pattern: '<script src="assets/js/lib/jquery.min.js"></script>',
                         replacement: '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>'
                     }, {
-                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script>',
+                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script><script src="assets/js/lib/StackBlur.js"></script>',
                         replacement: '<script src="minified_assets/js/resource.min.js"></script>'
                     }, {
                         pattern: '<script src="assets/js/lib/angular.min.js"></script>',
@@ -133,13 +131,15 @@ module.exports = function(grunt) {
                     }, {
                         pattern: '<script src="assets/js/lib/angular-route.min.js"></script>',
                         replacement: '<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js"></script>'
+                    }, {
+                        pattern: '<script src="//localhost:35729/livereload.js"></script>',
+                        replacement: ''
                     }]
                 }
             }
         }
     });
 
-    // Load plugins here.
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bootlint');
     grunt.loadNpmTasks('grunt-contrib-csslint');
@@ -152,7 +152,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-string-replace');
 
-    // Register tasks here.
     grunt.registerTask('default', [
         'watch'
     ]);

@@ -11,15 +11,18 @@
     <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
-<body>
-    Hi. I'm Sarad Mohanan
+<body ng-app="sarad">
+    <div ng-controller="background" class="main-background"></div>
+    <div ng-view class="view-holder"></div>
     <script src="assets/js/lib/angular.min.js"></script>
     <script src="assets/js/lib/angular-route.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/router.js"></script>
     <script src="assets/js/controller.js"></script>
     <script src="assets/js/services.js"></script>
+    <script src="assets/js/lib/StackBlur.js"></script>
     <script src="assets/js/lib/bootstrap.min.js"></script>
     <script src="assets/js/lib/jquery.min.js"></script>
+    <script src="//localhost:35729/livereload.js"></script>
 </body>
 </html>

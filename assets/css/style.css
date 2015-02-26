@@ -5,6 +5,7 @@ body {
     background-color: #fff;
     font-family: 'Oxygen', sans-serif !important;
     height: 100%;
+    position: relative;
 }
 
 a {
@@ -13,4 +14,42 @@ a {
 
 textarea {
     resize: none;
+}
+
+.home-welcome {
+    padding-top: 28%;
+    font-size: 30px;
+    text-align: center;
+}
+
+.main-background {
+    background: -moz-linear-gradient(#6D7D96, #E4F0FE);
+    background: -o-linear-gradient(#6D7D96, #E4F0FE);
+    background: -webkit-linear-gradient(#6D7D96, #E4F0FE);
+    background: linear-gradient(#6D7D96, #E4F0FE);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.main-background,
+.view-holder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.view-holder {
+    z-index: 10;   
+}
+
+.home-message-background {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
 }
