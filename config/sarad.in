@@ -6,6 +6,12 @@ server {
     root /home/sarad/sarad.in;
     index index.html index.htm;
 
+    location /minified_assets/ {
+        alias /home/sarad/sarad.in/minified_assets/;
+        autoindex off;
+        expires 168h;
+    }
+
     location / {
     	alias /home/sarad/sarad.in/;
     	autoindex off;
