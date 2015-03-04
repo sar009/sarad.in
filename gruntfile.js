@@ -1,4 +1,6 @@
-var crypto = require('crypto'), fs = require('fs');
+var crypto = require('crypto')
+var fs = require('fs');
+
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -119,7 +121,7 @@ module.exports = function(grunt) {
                         replacement: '<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">'
                     }, {
                         pattern: '<link href="assets/css/style.css" rel="stylesheet">',
-                        replacement: '<link href="minified_assets/css/style.min.css" rel="stylesheet">'
+                        replacement: '<link href="/minified_assets/css/style.min.css" rel="stylesheet">'
                     }, {
                         pattern: '<script src="assets/js/lib/bootstrap.min.js"></script>',
                         replacement: '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>'
@@ -127,8 +129,8 @@ module.exports = function(grunt) {
                         pattern: '<script src="assets/js/lib/jquery.min.js"></script>',
                         replacement: '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>'
                     }, {
-                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script><script src="assets/js/lib/StackBlur.js"></script>',
-                        replacement: '<script src="minified_assets/js/resource.min.js?id="' + getResourceHash() + '></script>'
+                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script>',
+                        replacement: '<script src="/minified_assets/js/resource.min.js?id=' + getResourceHash() + '"></script>'
                     }, {
                         pattern: '<script src="assets/js/lib/angular.min.js"></script>',
                         replacement: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>'
