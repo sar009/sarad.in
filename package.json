@@ -17,9 +17,9 @@
         "grunt-contrib-watch": "0.6.1",
         "grunt-sass": "~0.14.1",
         "grunt-string-replace": "~1.0.0",
-        "loopback": "~2.14.0"
+        "express": "~4.12.2"
     },
-    "main": "index.js",
+    "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
