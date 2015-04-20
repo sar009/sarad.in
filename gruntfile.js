@@ -1,4 +1,4 @@
-var crypto = require('crypto')
+var crypto = require('crypto');
 var fs = require('fs');
 
 module.exports = function(grunt) {
@@ -24,10 +24,7 @@ module.exports = function(grunt) {
                 }
             },
             app: [
-                'assets/js/app.js',
-                'assets/js/router.js',
-                'assets/js/controller.js',
-                'assets/js/services.js'
+                'assets/js/*.js'
             ]
         },
         uglify: {
@@ -40,8 +37,7 @@ module.exports = function(grunt) {
                         'assets/js/app.js',
                         'assets/js/router.js',
                         'assets/js/controller.js',
-                        'assets/js/services.js',
-                        'assets/js/lib/StackBlur.js'
+                        'assets/js/services.js'
                     ]
                 }
             }
@@ -121,16 +117,7 @@ module.exports = function(grunt) {
                         replacement: '<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">'
                     }, {
                         pattern: '<link href="assets/css/style.css" rel="stylesheet">',
-                        replacement: '<link href="/minified_assets/css/style.min.css" rel="stylesheet">'
-                    }, {
-                        pattern: '<script src="assets/js/lib/bootstrap.min.js"></script>',
-                        replacement: '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>'
-                    }, {
-                        pattern: '<script src="assets/js/lib/jquery.min.js"></script>',
-                        replacement: '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>'
-                    }, {
-                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script>',
-                        replacement: '<script src="/minified_assets/js/resource.min.js?id=' + getResourceHash() + '"></script>'
+                        replacement: '<link href="/minified_assets/css/style.min.css?id=' + getStyleHash() + '" rel="stylesheet">'
                     }, {
                         pattern: '<script src="assets/js/lib/angular.min.js"></script>',
                         replacement: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>'
@@ -138,11 +125,23 @@ module.exports = function(grunt) {
                         pattern: '<script src="assets/js/lib/angular-route.min.js"></script>',
                         replacement: '<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-route.min.js"></script>'
                     }, {
+                        pattern: '<script src="assets/js/app.js"></script><script src="assets/js/router.js"></script><script src="assets/js/controller.js"></script><script src="assets/js/services.js"></script>',
+                        replacement: '<script src="/minified_assets/js/resource.min.js?id=' + getResourceHash() + '"></script>'
+                    }, {
+                        pattern: '<script src="assets/js/lib/jquery.min.js"></script>',
+                        replacement: '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>'
+                    }, {
+                        pattern: '<script src="assets/js/lib/bootstrap.min.js"></script>',
+                        replacement: '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>'
+                    }, {
                         pattern: '<script src="//localhost:35729/livereload.js"></script>',
                         replacement: ''
                     }, {
                         pattern: '@@partialChecksum@@',
                         replacement: getTemplateHash()
+                    }, {
+                        pattern: 'http://localhost:8000/',
+                        replacement: 'http://api.sarad.in/'
                     }]
                 }
             }
@@ -188,6 +187,10 @@ function getTemplateHash() {
 
 function getResourceHash() {
     return checksum(fs.readFileSync('minified_assets/js/resource.min.js'), 'md5');
+}
+
+function getStyleHash() {
+    return checksum(fs.readFileSync('minified_assets/css/style.min.css'), 'md5');
 }
 
 function checksum(str, algorithm, encoding) {

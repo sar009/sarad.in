@@ -1,10 +1,10 @@
 html,
 body {
-    margin-left: 0;
-    margin-top: 0;
     background-color: #fff;
     font-family: 'Oxygen', sans-serif !important;
     height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 a {
@@ -16,27 +16,108 @@ textarea {
 }
 
 .view-holder {
-    background: -moz-linear-gradient(#6D7D96, #E4F0FE);
-    background: -o-linear-gradient(#6D7D96, #E4F0FE);
-    background: -webkit-linear-gradient(#6D7D96, #E4F0FE);
-    background: linear-gradient(#6D7D96, #E4F0FE);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
     -moz-background-size: cover;
     -o-background-size: cover;
     -webkit-background-size: cover;
     background-size: cover;
-    min-height: 100%;
+    height: 100%;
+}
+
+.home-welcome-container {
+    font-size: 30px;
+    text-align: center;
+    /*background: background-color background-image background-repeat background-attachment background-position;*/
+    background: #fff no-repeat fixed center center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    display: table;
+    position: absolute;
 }
 
 .home-welcome {
-    padding-top: 28%;
-    font-size: 30px;
-    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.home-welcome-inner {
+    margin: -80px auto 0 auto;
+    width: 350px;
+}
+
+.home-image-holder {
+    height: 300px;
+    width: 300px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    /*border: 1px solid #000;*/
 }
 
 .home-message-background {
     background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
+    padding: 0 10px;
+}
+
+.social-holder {
+    width: 280px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+}
+
+.social-holder-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    line-height: 48px;
+    font-size: 28px;
+    border: 1px solid #000;
+    float: left;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: #fff;
+    -webkit-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
+    -moz-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
+}
+
+.social-facebook-icon {
+    border: 1px solid #49659F;
+    color: #49659F;
+}
+
+.social-facebook-icon:hover {
+    background-color: #49659F;
+    color: #FFF;
+}
+
+.social-twitter-icon {
+    border: 1px solid #55ACEE;
+    color: #55ACEE;
+}
+
+.social-twitter-icon:hover {
+    background-color: #55ACEE;
+    color: #FFF;
+}
+
+.social-linkedin-icon {
+    border: 1px solid #1B86BD;
+    color: #1B86BD;
+}
+
+.social-linkedin-icon:hover {
+    background-color: #1B86BD;
+    color: #FFF;
+}
+
+.social-stack-overflow-icon {
+    border: 1px solid #FF9900;
+    color: #FF9900;
+}
+
+.social-stack-overflow-icon:hover {
+    background-color: #FF9900;
+    color: #FFF;
 }

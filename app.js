@@ -1,10 +1,9 @@
 var express = require('express');
 var app = express();
-var urls = require('./node_server/urls');
-var views = require('./node_server/views');
+var routers = require('./node_server/router');
+var postgresql = require('./node_server/models/postgresql');
 
-app.use('/', urls);
-app.use('/', views);
+app.use('/', routers);
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
