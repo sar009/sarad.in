@@ -115,3 +115,5 @@ target/
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+
+django_server/django_server/static_collected/
