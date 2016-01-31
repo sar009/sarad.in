@@ -1,5 +1,5 @@
 angular
-    .module('sarad.controllers', [])
-    .controller("home", function($scope, $interval, saradApiService) {
+    .module('website.controllers', [])
+    .controller("home", function($scope, $interval, websiteAPIService) {
         $scope.init = function() {};
     });
