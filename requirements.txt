@@ -14,3 +14,4 @@ Markdown==2.6.1
 psycopg2==2.6
 pytz==2015.2
 simplejson==3.6.5
+raven==5.1.1

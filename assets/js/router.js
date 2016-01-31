@@ -1,5 +1,5 @@
 angular
-    .module('sarad.routers', ['ngRoute'])
+    .module('website.routers', ['ngRoute'])
     .config(['$routeProvider', function($routeProvider) {
         var md5Checksum = "@@partialChecksum@@";
         $routeProvider

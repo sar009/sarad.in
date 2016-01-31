@@ -27,7 +27,7 @@ textarea {
     font-size: 30px;
     text-align: center;
     /*background: background-color background-image background-repeat background-attachment background-position;*/
-    background: #fff no-repeat fixed center center;
+    background: #fff url("/assets/img/mountains.jpg") no-repeat fixed center center;
     background-size: cover;
     height: 100%;
     width: 100%;
@@ -65,13 +65,12 @@ textarea {
     overflow: hidden;
 }
 
-.social-holder-icon {
+.social-holder a div {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     line-height: 48px;
     font-size: 28px;
-    border: 1px solid #000;
     float: left;
     margin: 0 10px;
     cursor: pointer;
@@ -120,4 +119,12 @@ textarea {
 .social-stack-overflow-icon:hover {
     background-color: #FF9900;
     color: #FFF;
+}
+
+.bg-info {
+    border: 1px solid #000;
+    right: 10px;
+    bottom: 10px;
+    position: fixed;
+    font-size: 12px;
 }

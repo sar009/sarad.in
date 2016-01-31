@@ -1,5 +1,5 @@
-angular.module('sarad', [
-    'sarad.routers',
-    'sarad.controllers',
-    'sarad.services'
+angular.module('website', [
+    'website.routers',
+    'website.controllers',
+    'website.services'
 ]);

@@ -139,17 +139,24 @@ module.exports = function(grunt) {
                     }, {
                         pattern: '@@partialChecksum@@',
                         replacement: getTemplateHash()
-                    }, {
-                        pattern: 'http://localhost:8000/',
-                        replacement: 'http://api.sarad.in/'
                     }]
+                }
+            }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    hostname: '*',
+                    index: 'dev_index.html'
                 }
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bootlint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
@@ -161,6 +168,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-string-replace');
 
     grunt.registerTask('default', [
+        'connect',
         'watch'
     ]);
     grunt.registerTask('build', [
