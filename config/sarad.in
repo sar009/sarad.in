@@ -1,6 +1,6 @@
 server {
    listen       80;
-   server_name  sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
+   server_name  sarad.in www.sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
    return       301 https://$server_name$request_uri;
 }
 
@@ -16,7 +16,7 @@ server {
     ssl_dhparam                 /etc/ssl/certs/dhparam.pem;
     ssl_prefer_server_ciphers   on;
 
-    server_name                 sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
+    server_name                 sarad.in www.sarad.in *.sarad.in www.sar009.com sar009.com *.sar009.com;
 
     root                        /home/sarad/sarad.in;
     index                       index.html index.htm;
@@ -28,7 +28,7 @@ server {
     }
 
     location / {
-    	alias      /home/sarad/sarad.in/;
-    	autoindex  off;
+        alias      /home/sarad/sarad.in/;
+        autoindex  off;
     }
 }
