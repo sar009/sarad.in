@@ -5,22 +5,18 @@ body {
     height: 100%;
     width: 100%;
     margin: 0;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
 }
 
 a {
     text-decoration: none !important;
+    background-color: transparent;
 }
 
-textarea {
-    resize: none;
-}
-
-.view-holder {
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    -webkit-background-size: cover;
-    background-size: cover;
-    height: 100%;
+a:focus {
+    outline: none;
 }
 
 .home-welcome-container {
@@ -45,7 +41,7 @@ textarea {
     width: 350px;
 }
 
-.home-image-holder {
+.profile-image-holder {
     height: 300px;
     width: 300px;
     margin: 0 auto 20px auto;
@@ -60,7 +56,7 @@ textarea {
 }
 
 .social-holder {
-    width: 280px;
+    width: 288px;
     margin: 20px auto 0 auto;
     overflow: hidden;
 }
@@ -119,12 +115,4 @@ textarea {
 .social-stack-overflow-icon:hover {
     background-color: #FF9900;
     color: #FFF;
-}
-
-.bg-info {
-    border: 1px solid #000;
-    right: 10px;
-    bottom: 10px;
-    position: fixed;
-    font-size: 12px;
 }
