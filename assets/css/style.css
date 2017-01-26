@@ -45,7 +45,9 @@ a:focus {
     width: 300px;
     margin: 0 auto 20px auto;
     border-radius: 50%;
-    /*border: 1px solid #000;*/
+    border: 1px solid #000;
+    background: #fff url("/assets/img/sarad.jpeg") no-repeat;
+    background-size: cover;
 }
 
 .home-message-background {

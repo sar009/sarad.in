@@ -111,8 +111,13 @@ module.exports = function(grunt) {
                 port: 9000,
                 hostname: 'localhost',
                 livereload: true,
-                index: 'dev_index.html',
-                open: true
+                open: true,
+                base: {
+                    path: '.',
+                    options: {
+                        index: 'dev_index.html'
+                    }
+                }
             },
             livereload: {}
         },
@@ -133,6 +138,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-string-replace');
 
     grunt.registerTask('default', [
+        'connect',
+        'watch'
+    ]);
+    grunt.registerTask('serve', [
         'connect',
         'watch'
     ]);
