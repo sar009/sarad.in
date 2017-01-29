@@ -141,7 +141,13 @@ a:focus {
     }
 }
 
-@media (max-height: 480px) and (orientation: landscape) {
+@media (max-height: 480px) and (orientation: landscape){
+    .profile-image-holder {
+        display: none;
+    }
+}
+
+@media (max-height: 480px) and (max-width: 450px) {
     .profile-image-holder {
         display: none;
     }
