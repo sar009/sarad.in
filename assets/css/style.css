@@ -117,3 +117,32 @@ a:focus {
     background-color: #FF9900;
     color: #FFF;
 }
+
+@media (max-width: 767px) {
+    .home-welcome-container {
+        font-size: 25px;
+    }
+
+    .profile-image-holder {
+        height: 220px;
+        width: 220px;
+    }
+
+    .social-holder a div {
+        width: 40px;
+        height: 40px;
+        line-height: 38px;
+        font-size: 23px;
+        margin: 0 7px;
+    }
+
+    .social-holder {
+        width: 224px;
+    }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+    .profile-image-holder {
+        display: none;
+    }
+}
