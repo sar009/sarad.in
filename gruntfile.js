@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             app: {
                 files: {
                     'dist/css/style.min.css': [
-                        'assets/css/style.css'
+                        'assets/css/style.css', 'assets/css/fontello.css'
                     ]
                 }
             }
@@ -99,8 +99,11 @@ module.exports = function(grunt) {
                 }],
                 options: {
                     replacements: [{
-                        pattern: '<link href="assets/css/style.css" rel="stylesheet">',
+                        pattern: '<link href="/assets/css/style.css" rel="stylesheet">',
                         replacement: '<link href="/dist/css/style.min.css?id=' + getStyleHash() + '" rel="stylesheet">'
+                    }, {
+                        pattern: '<link href="/assets/css/fontello.css" rel="stylesheet">',
+                        replacement: ''
                     }]
                 }
             }
@@ -122,13 +125,25 @@ module.exports = function(grunt) {
             livereload: {}
         },
 
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'assets/',
+                    src: 'font/*.*',
+                    dest: 'dist/'
+                }]
+            }
+        },
+
         clean: ['dist']
     });
 
     grunt.loadNpmTasks('grunt-bootlint');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
@@ -148,6 +163,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean',
         // 'jshint',
+        'copy',
         'uglify',
         'htmlmin',
         'cssmin',
@@ -161,7 +177,11 @@ module.exports = function(grunt) {
 };
 
 function getStyleHash() {
-    return checksum(fs.readFileSync('dist/css/style.min.css'), 'md5');
+    var path = 'dist/css/style.min.css';
+    if (fs.existsSync(path)) {
+        return checksum(fs.readFileSync(path), 'md5');
+    }
+    return null;
 }
 
 function checksum(str, algorithm, encoding) {
