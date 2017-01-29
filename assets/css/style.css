@@ -23,7 +23,7 @@ a:focus {
     font-size: 30px;
     text-align: center;
     /*background: background-color background-image background-repeat background-attachment background-position;*/
-    background: #fff url("/assets/img/mountains.jpg") no-repeat fixed center center;
+    background: #fff url("/assets/img/mountains.jpg?id=@@IMAGE_HASH@@") no-repeat fixed center center;
     background-size: cover;
     height: 100%;
     width: 100%;
@@ -46,7 +46,7 @@ a:focus {
     margin: 0 auto 20px auto;
     border-radius: 50%;
     border: 1px solid #000;
-    background: #fff url("/assets/img/sarad.jpeg") no-repeat;
+    background: #fff url("/assets/img/sarad.jpeg?id=@@IMAGE_HASH@@") no-repeat;
     background-size: cover;
 }
 

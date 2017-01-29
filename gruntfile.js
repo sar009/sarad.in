@@ -96,11 +96,24 @@ module.exports = function(grunt) {
                     'index.html': [
                         'index.html'
                     ]
+                }, {
+                    'dist/css/style.min.css': [
+                        'dist/css/style.min.css'
+                    ]
                 }],
                 options: {
                     replacements: [{
+                        pattern: /@@FONT_HASH@@/g,
+                        replacement: getFileHash('font')
+                    }, {
+                        pattern: /\/assets\/img/g,
+                        replacement: "/dist/img"
+                    }, {
+                        pattern: /@@IMAGE_HASH@@/g,
+                        replacement: getFileHash('img')
+                    }, {
                         pattern: '<link href="/assets/css/style.css" rel="stylesheet">',
-                        replacement: '<link href="/dist/css/style.min.css?id=' + getStyleHash() + '" rel="stylesheet">'
+                        replacement: '<link href="/dist/css/style.min.css?id=' + getFileHash('css') + '" rel="stylesheet">'
                     }, {
                         pattern: '<link href="/assets/css/fontello.css" rel="stylesheet">',
                         replacement: ''
@@ -131,6 +144,11 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'assets/',
                     src: 'font/*.*',
+                    dest: 'dist/'
+                }, {
+                    expand: true,
+                    cwd: 'assets/',
+                    src: ['img/mountains.jpg', 'img/sarad.jpeg'],
                     dest: 'dist/'
                 }]
             }
@@ -176,12 +194,43 @@ module.exports = function(grunt) {
     ]);
 };
 
-function getStyleHash() {
-    var path = 'dist/css/style.min.css';
-    if (fs.existsSync(path)) {
-        return checksum(fs.readFileSync(path), 'md5');
+function getFileHash(type) {
+    var path = [];
+    switch (type) {
+        case "font":
+            if (!fs.existsSync('dist/font/')) {
+                return;
+            }
+            fs.readdirSync('dist/font/').forEach(function(file) {
+                path.push('dist/font/' + file);
+            });
+            break;
+
+        case "css":
+            path.push('dist/css/style.min.css');
+            break;
+
+        case "img":
+            if (!fs.existsSync('dist/img/')) {
+                return;
+            }
+            fs.readdirSync('dist/img/').forEach(function(file) {
+                path.push('dist/font/' + file);
+            });
+            break;
+
+        default:
+            return null;
     }
-    return null;
+
+    var hash = "";
+    path.forEach(function (eachPath) {
+        if (fs.existsSync(eachPath)) {
+            hash += checksum(fs.readFileSync(eachPath), 'md5');
+        }
+    });
+
+    return checksum(hash, 'md5');
 }
 
 function checksum(str, algorithm, encoding) {
