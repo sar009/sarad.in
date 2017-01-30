@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://sarad.in/sitemap.xml
+Sitemap: https://sarad.in/sitemap.xml
