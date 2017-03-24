@@ -109,12 +109,12 @@ a:focus {
 }
 
 .social-stack-overflow-icon {
-    border: 1px solid #FF9900;
-    color: #FF9900;
+    border: 1px solid #24292E;
+    color: #24292E;
 }
 
 .social-stack-overflow-icon:hover {
-    background-color: #FF9900;
+    background-color: #24292E;
     color: #FFF;
 }
 
