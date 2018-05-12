@@ -1,9 +1,7 @@
 html,
 body {
-    background-color: #fff;
+    background-color: #FFF;
     font-family: 'Oxygen', sans-serif !important;
-    height: 100%;
-    width: 100%;
     margin: 0;
     font-size: 14px;
     line-height: 1.42857143;
@@ -15,8 +13,17 @@ a {
     background-color: transparent;
 }
 
-a:focus {
+a:focus,
+a:active {
     outline: none;
+}
+
+.nlm {
+    margin-left: 0 !important;
+}
+
+.nrm {
+    margin-right: 0 !important;
 }
 
 .home-welcome-container {
@@ -46,23 +53,23 @@ a:focus {
     margin: 0 auto 20px auto;
     border-radius: 50%;
     border: 1px solid #000;
-    background: #fff url("/assets/img/sarad.jpeg?id=@@IMAGE_HASH@@") no-repeat;
+    background: #FFF url("/assets/img/sarad.jpeg?id=@@IMAGE_HASH@@") no-repeat;
     background-size: cover;
 }
 
 .home-message-background {
     background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
+    color: #FFF;
     padding: 0 10px;
 }
 
-.social-holder {
-    width: 288px;
+.sal-holder {
+    width: 268px;
     margin: 20px auto 0 auto;
     overflow: hidden;
 }
 
-.social-holder a div {
+.sal-holder a div {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -71,51 +78,145 @@ a:focus {
     float: left;
     margin: 0 10px;
     cursor: pointer;
-    background-color: #fff;
+    background-color: #FFF;
     -webkit-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
     -moz-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
     -o-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
     transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
 }
 
-.social-facebook-icon {
-    border: 1px solid #49659F;
-    color: #49659F;
-}
-
-.social-facebook-icon:hover {
-    background-color: #49659F;
-    color: #FFF;
-}
-
-.social-twitter-icon {
+.sal-stw-icon {
     border: 1px solid #55ACEE;
     color: #55ACEE;
 }
 
-.social-twitter-icon:hover {
+.sal-stw-icon:hover {
     background-color: #55ACEE;
     color: #FFF;
 }
 
-.social-linkedin-icon {
+.sal-sli-icon {
     border: 1px solid #1B86BD;
     color: #1B86BD;
 }
 
-.social-linkedin-icon:hover {
+.sal-sli-icon:hover {
     background-color: #1B86BD;
     color: #FFF;
 }
 
-.social-stack-overflow-icon {
+.sal-sgi-icon {
     border: 1px solid #24292E;
     color: #24292E;
 }
 
-.social-stack-overflow-icon:hover {
+.sal-sgi-icon:hover {
     background-color: #24292E;
     color: #FFF;
+}
+
+.sal-sbl-icon {
+    border: 1px solid #02B875;
+    color: #02B875;
+    font-weight: 600;
+}
+
+.sal-sbl-icon:hover {
+    background-color: #02B875;
+    color: #FFF;
+}
+
+.blog-index-holder {
+    margin: 10px 20px;
+    padding-left: 200px;
+}
+
+.blog-navigator {
+    margin: 10px 20px;
+    font-size: 22px;
+}
+
+.static-navigator {
+    position: fixed
+}
+
+.blog-index-title {
+    font-size: 60px;
+    margin-bottom: 5px;
+}
+
+.blog-index-subtitle {
+    font-size: 17px;
+}
+
+.blog-index-list-container {
+    margin-top: 30px;
+}
+
+.blog-index-list-container .item {
+    margin-bottom: 30px;
+    color: #333;
+    width: 620px;
+    padding: 10px;
+}
+
+.blog-index-list-container .item:hover {
+    background-color: #F7F7F7;
+}
+
+.blog-index-list-container .title {
+    font-size: 22px;
+}
+
+.blog-index-list-container .sub-title {
+    margin-top: 5px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 4.5em;
+    line-height: 1.5em;
+}
+
+.blog-index-list-container .time {
+    margin-top: 10px;
+    text-align: right;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.blog-content-holder {
+    width: 720px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+.blog-title {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.blog-desc {
+    font-size: 16px;
+    font-style: italic;
+}
+
+.blog-date {
+    font-style: italic;
+    font-size: 13px;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.blog-content {
+    font-size: 20px;
+    line-height: 34px;
+    margin-bottom: 50px;
+}
+
+.blog-content pre {
+    font-size: 16px;
+    line-height: 20px;
 }
 
 @media (max-width: 767px) {
@@ -128,7 +229,7 @@ a:focus {
         width: 220px;
     }
 
-    .social-holder a div {
+    .sal-holder a div {
         width: 40px;
         height: 40px;
         line-height: 38px;
@@ -136,12 +237,12 @@ a:focus {
         margin: 0 7px;
     }
 
-    .social-holder {
-        width: 224px;
+    .sal-holder {
+        max-width: 210px;
     }
 }
 
-@media (max-height: 480px) and (orientation: landscape){
+@media (max-height: 480px) and (orientation: landscape) {
     .profile-image-holder {
         display: none;
     }
