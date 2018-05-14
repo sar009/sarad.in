@@ -2,14 +2,15 @@
 
 var crypto = require('crypto');
 var fs = require('fs');
-var marked = require('marked');
 var hljs = require('highlight.js');
+var marked = require('marked');
 
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
         cssmin: {
             app: {
                 files: {
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+
         jshint: {
             options: {
                 bitwise: true,
@@ -38,6 +40,7 @@ module.exports = function(grunt) {
                 'assets/json/*.json'
             ]
         },
+
         uglify: {
             app: {
                 options: {
@@ -51,11 +54,13 @@ module.exports = function(grunt) {
                 files: {
                     'dist/js/script.min.js': [
                         'assets/js/blog.js',
+                        'assets/js/constants.js',
                         'assets/js/util.js'
                     ]
                 }
             }
         },
+
         htmlmin: {
             app: {
                 options: {
@@ -72,6 +77,13 @@ module.exports = function(grunt) {
                 }]
             }
         },
+
+        'json-minify': {
+            app: {
+                files: 'dist/json/*.json'
+            }
+        },
+
         watch: {
             options: {
                 livereload: true
@@ -105,48 +117,6 @@ module.exports = function(grunt) {
             }
         },
 
-        'string-replace': {
-            app: {
-                files: [{
-                    'index.html': [
-                        'index.html'
-                    ]
-                }, {
-                    'blog/index.html': [
-                        'blog/index.html'
-                    ]
-                }, {
-                    'dist/css/style.min.css': [
-                        'dist/css/style.min.css'
-                    ]
-                }],
-                options: {
-                    replacements: [{
-                        pattern: /@@FONT_HASH@@/g,
-                        replacement: getFileHash('font')
-                    }, {
-                        pattern: /\/assets\/img/g,
-                        replacement: "/dist/img"
-                    }, {
-                        pattern: /@@IMAGE_HASH@@/g,
-                        replacement: getFileHash('img')
-                    }, {
-                        pattern: '<link href="/assets/css/style.css" rel="stylesheet">',
-                        replacement: '<link href="/dist/css/style.min.css?id=' + getFileHash('css') + '" rel="stylesheet">'
-                    }, {
-                        pattern: '<link href="/assets/css/fontello.css" rel="stylesheet">',
-                        replacement: ''
-                    }, {
-                        pattern: '<script src="/assets/js/blog.js"></script>',
-                        replacement: '<script src="/dist/js/script.min.js?id=' + getFileHash('js') + '"></script>'
-                    }, {
-                        pattern: '<script src="/assets/js/util.js"></script>',
-                        replacement: ''
-                    }]
-                }
-            }
-        },
-
         connect: {
             options: {
                 port: 9000,
@@ -175,6 +145,11 @@ module.exports = function(grunt) {
                     cwd: 'assets/',
                     src: ['img/mountains.jpg', 'img/sarad.jpeg'],
                     dest: 'dist/'
+                }, {
+                    expand: true,
+                    cwd: 'assets/',
+                    src: ['json/blog_index.json'],
+                    dest: 'dist/'
                 }]
             }
         },
@@ -192,27 +167,30 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-json-minify');
 
     grunt.registerTask('default', [
         'serve'
     ]);
+
     grunt.registerTask('serve', [
         'connect',
         'watch'
     ]);
+
     grunt.registerTask('build', [
         'clean',
         'lint',
         'copy',
+        'blog',
         'uglify',
         'htmlmin',
         'cssmin',
-        'calculate-hash',
-        'string-replace',
-        'blog'
+        'json-minify',
+        'build-cache'
     ]);
-    grunt.registerTask('calculate-hash', function () {
+
+    grunt.registerTask('build-cache', 'build cache task', function () {
         var fileHash = {};
         var option = ["css", "js", "font", "img"];
         var checksum = function(str, algorithm, encoding) {
@@ -268,12 +246,63 @@ module.exports = function(grunt) {
         option.forEach(function (eachOption) {
             fileHash[eachOption] = hashCalculator(eachOption);
         });
+
+        var filesToReplace = ['index.html', 'blog/index.html', 'dist/css/style.min.css', 'dist/js/script.min.js'];
+        fs.readdirSync('blog/md/').forEach(function(file) {
+            var blogName = file.substring(0, (file.length - 3));
+            var blogLocation = 'blog/' + blogName;
+            if (fs.existsSync(blogLocation)) {
+                filesToReplace.push(blogLocation + '/index.html');
+            }
+        });
+        const replacements = [{
+            pattern: /@@FONT_HASH@@/g,
+            replacement: fileHash.font
+        }, {
+            pattern: /\/assets\/img/g,
+            replacement: "/dist/img"
+        }, {
+            pattern: /@@IMAGE_HASH@@/g,
+            replacement: fileHash.img
+        }, {
+            pattern: '<link href="/assets/css/style.css" rel="stylesheet">',
+            replacement: '<link href="/dist/css/style.min.css?id=' + fileHash.css + '" rel="stylesheet">'
+        }, {
+            pattern: '<link href="/assets/css/fontello.css" rel="stylesheet">',
+            replacement: ''
+        }, {
+            pattern: '<script src="/assets/js/constants.js"></script>',
+            replacement: '<script src="/dist/js/script.min.js?id=' + fileHash.js + '"></script>'
+        }, {
+            pattern: '<script src="/assets/js/blog.js"></script>',
+            replacement: ''
+        }, {
+            pattern: '<script src="/assets/js/util.js"></script>',
+            replacement: ''
+        }, {
+            pattern: '/assets/json/',
+            replacement: '/dist/json/'
+        }, {
+            pattern: '{{ js_version }}',
+            replacement: fileHash.js
+        }];
+
+        filesToReplace.forEach(function (eachFile) {
+            var fileContent = fs.readFileSync(eachFile, 'utf8');
+            replacements.forEach(function(eachReplacement) {
+                fileContent = fileContent.replace(eachReplacement.pattern, eachReplacement.replacement);
+            });
+            fs.writeFileSync(eachFile, fileContent);
+        })
     });
+
     grunt.registerTask('lint', [
         'jshint',
         'csslint'
     ]);
+
     grunt.registerTask('blog', 'build blog', function () {
+        var blogJson = [];
         marked.setOptions({
             renderer: new marked.Renderer(),
             langPrefix:'hljs ',
@@ -290,13 +319,6 @@ module.exports = function(grunt) {
             xhtml: false
         });
         var blogTemplate = fs.readFileSync('blog/blog_template.html', 'utf8');
-    // <meta name="description" content="Blog by Sarad Mohanan. See you on the other side :)">
-    //         <meta name="keywords" content="sarad, mohanan, blog">
-    //         <meta property="og:title" content="Sarad's Blog" />
-    //         <meta property="og:url" content="http://sarad.in/blog.html"/>
-    //         <meta property="og:site_name" content="Sarad's Blog"/>
-    //         <meta property="og:description" content="Blog by Sarad Mohanan. See you on the other side :)"/>
-    //         <title>Sarad Mohanan</title>
         fs.readdirSync('blog/md/').forEach(function(file) {
             var blogName = file.substring(0, (file.length - 3));
             var blogLocation = 'blog/' + blogName;
@@ -311,71 +333,32 @@ module.exports = function(grunt) {
             var meta = rawMd.split("---meta-end---")[0];
             var content = rawMd.split("---meta-end---")[1];
             var metaKeys = processMetaKeys(meta, ["title", "date", "desc"]);
+            blogJson.push({
+                "title": metaKeys.title,
+                "desc": metaKeys.desc,
+                "published_at": metaKeys.date,
+                "href": blogLocation + "/"
+            });
             var publishDate = new Date(metaKeys.date);
 
+            var metaTags = '<meta name="description" content="Blog by Sarad Mohanan. See you on the other side :)">\n' +
+                '    <meta name="keywords" content="sarad, mohanan, blog, ' + metaKeys.title.split(' ').join(', ') + '">\n' +
+                '    <meta property="og:title" content="' + metaKeys.title + '" />\n' +
+                '    <meta property="og:url" content="http://sarad.in/' + blogLocation + '/"/>\n' +
+                '    <meta property="og:site_name" content="' + metaKeys.title + '"/>\n' +
+                '    <meta property="og:description" content="' + metaKeys.desc + '"/>\n' +
+                '    <title>Sarad | ' + metaKeys.title + '</title>';
+
+            blogTemplate = blogTemplate.replace("<!--{{ meta_tags }}-->", metaTags);
             blogTemplate = blogTemplate.replace("<!--{{ blog_title }}-->", metaKeys.title);
             blogTemplate = blogTemplate.replace("<!--{{ blog_desc }}-->", metaKeys.desc);
             blogTemplate = blogTemplate.replace("<!--{{ blog_date }}-->", publishDate.toDateString());
             blogTemplate = blogTemplate.replace("<!--{{ blog_content }}-->", marked(content.trim()));
             fs.writeFileSync(blogLocation + '/index.html', blogTemplate);
         });
+        fs.writeFileSync("assets/json/blog_index.json", JSON.stringify(blogJson, null, 4));
     });
 };
-
-function getFileHash(type) {
-    var path = [];
-    switch (type) {
-        case "font":
-            if (!fs.existsSync('dist/font/')) {
-                return;
-            }
-            fs.readdirSync('dist/font/').forEach(function(file) {
-                path.push('dist/font/' + file);
-            });
-            break;
-
-        case "css":
-            path.push('dist/css/style.min.css');
-            break;
-
-        case "img":
-            if (!fs.existsSync('dist/img/')) {
-                return;
-            }
-            fs.readdirSync('dist/img/').forEach(function(file) {
-                path.push('dist/font/' + file);
-            });
-            break;
-
-        case "js":
-            if (!fs.existsSync('dist/js/')) {
-                return;
-            }
-            fs.readdirSync('dist/js/').forEach(function(file) {
-                path.push('dist/js/' + file);
-            });
-            break;
-
-        default:
-            return null;
-    }
-
-    var hash = "";
-    var checksum = function(str, algorithm, encoding) {
-        return crypto
-            .createHash(algorithm || 'md5')
-            .update(str, 'utf8')
-            .digest(encoding || 'hex')
-    };
-
-    path.forEach(function (eachPath) {
-        if (fs.existsSync(eachPath)) {
-            hash += checksum(fs.readFileSync(eachPath), 'md5');
-        }
-    });
-
-    return checksum(hash, 'md5');
-}
 
 function processMetaKeys(metaContent, allowedKeys) {
     var availableKeys = {};

@@ -1,0 +1,1 @@
+var __JS_VERSION__ = "{{ js_version }}";
