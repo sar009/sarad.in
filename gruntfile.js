@@ -361,12 +361,9 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('sitemap', 'build sitemap', function () {
-        var contents = {
-            "url": [
-                "https://sarad.in/",
-                "https://sarad.in/blog/"
-            ],
-            "image": [{
+        var contents = [{
+            "url": "https://sarad.in/",
+            "images": [{
                 "loc": "https://sarad.in/dist/img/sarad.jpeg",
                 "caption": "ME :p",
                 "title": "Sarad Mohanan"
@@ -375,27 +372,36 @@ module.exports = function(grunt) {
                 "caption": "background image",
                 "title": "mountains"
             }]
-        };
+        }, {
+            "url": "https://sarad.in/blog/"
+        }];
 
         fs.readdirSync("blog/md/").forEach(function(file) {
             var blogName = file.substring(0, (file.length - 3));
-            contents.url.push("https://sarad.in/blog/" + blogName + "/");
+            contents.push({
+                "url": "https://sarad.in/blog/" + blogName + "/"
+            });
         });
 
         var siteMapBuilder = xmlBuilder.create("urlset", { encoding: "UTF-8" })
             .att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
             .att("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1");
 
-        contents.url.forEach(function (eachUrl) {
-            siteMapBuilder = siteMapBuilder.ele("url").ele("loc", eachUrl).up().up();
-        });
+        contents.forEach(function (eachUrl) {
+            siteMapBuilder = siteMapBuilder
+                .ele("url")
+                .ele("loc", eachUrl.url).up();
 
-        contents.image.forEach(function (eachImage) {
-            siteMapBuilder = siteMapBuilder.ele("image:image");
-            for (var key in eachImage) {
-                if (eachImage.hasOwnProperty(key)) {
-                    siteMapBuilder = siteMapBuilder.ele("image:" + key, eachImage[key]).up();
-                }
+            if (eachUrl.images) {
+                eachUrl.images.forEach(function (eachImage) {
+                    siteMapBuilder = siteMapBuilder.ele("image:image");
+                    for (var key in eachImage) {
+                        if (eachImage.hasOwnProperty(key)) {
+                            siteMapBuilder = siteMapBuilder.ele("image:" + key, eachImage[key]).up();
+                        }
+                    }
+                    siteMapBuilder = siteMapBuilder.up();
+                })
             }
             siteMapBuilder = siteMapBuilder.up();
         });

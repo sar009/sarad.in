@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://sarad.in/</loc>
+    <image:image>
+      <image:loc>https://sarad.in/dist/img/sarad.jpeg</image:loc>
+      <image:caption>ME :p</image:caption>
+      <image:title>Sarad Mohanan</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://sarad.in/dist/img/mountains.jpg</image:loc>
+      <image:caption>background image</image:caption>
+      <image:title>mountains</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://sarad.in/blog/</loc>
@@ -9,14 +19,4 @@
   <url>
     <loc>https://sarad.in/blog/test/</loc>
   </url>
-  <image:image>
-    <image:loc>https://sarad.in/dist/img/sarad.jpeg</image:loc>
-    <image:caption>ME :p</image:caption>
-    <image:title>Sarad Mohanan</image:title>
-  </image:image>
-  <image:image>
-    <image:loc>https://sarad.in/dist/img/mountains.jpg</image:loc>
-    <image:caption>background image</image:caption>
-    <image:title>mountains</image:title>
-  </image:image>
 </urlset>
