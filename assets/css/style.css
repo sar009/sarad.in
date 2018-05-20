@@ -231,7 +231,7 @@ a:active {
 
 .blog-loader-animation div {
     left: 310px;
-    top: 20px;
+    top: 60px;
     position: absolute;
     -webkit-animation: blog-loader-animation linear 1.5s infinite;
     animation: blog-loader-animation linear 1.5s infinite;
@@ -408,6 +408,10 @@ a:active {
     .blog-content {
         font-size: 18px;
         line-height: 1.5;
+    }
+
+    .blog-loader-animation div {
+        left: 50%;
     }
 }
 

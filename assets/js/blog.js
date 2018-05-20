@@ -1,5 +1,6 @@
 var loadBlogIndex = function () {
     $('.blog-loader-animation').css('display', 'inherit');
+    $('.blog-index-list-container').empty();
     requestJson("blog_index", function (response) {
         var listContent = "";
         response.forEach(function (eachItem) {

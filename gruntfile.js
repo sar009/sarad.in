@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var hljs = require('highlight.js');
 var marked = require('marked');
+var xmlBuilder = require('xmlbuilder');
 
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
@@ -158,7 +159,6 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-csslint');
@@ -187,8 +187,72 @@ module.exports = function(grunt) {
         'htmlmin',
         'cssmin',
         'json-minify',
-        'build-cache'
+        'build-cache',
+        'sitemap'
     ]);
+
+    grunt.registerTask('lint', [
+        'jshint',
+        'csslint'
+    ]);
+
+    grunt.registerTask('blog', 'build blog', function () {
+        var blogJson = [];
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            langPrefix:'hljs ',
+            highlight: function(code, lang) {
+                return hljs.highlight(lang, code).value;
+            },
+            gfm: true,
+            tables: true,
+            breaks: false,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false,
+            xhtml: false
+        });
+        var blogTemplate = fs.readFileSync('blog/blog_template.html', 'utf8');
+        fs.readdirSync('blog/md/').forEach(function(file) {
+            var blogName = file.substring(0, (file.length - 3));
+            var blogLocation = 'blog/' + blogName;
+            if (!fs.existsSync(blogLocation)) {
+                fs.mkdirSync(blogLocation);
+            }
+            fs.writeFileSync(blogLocation + '.html', '<script type="text/javascript">' +
+                'window.location = "/' + blogLocation + '/"' +
+                '</script>');
+
+            var rawMd = fs.readFileSync('blog/md/' + file, 'utf8');
+            var meta = rawMd.split("---meta-end---")[0];
+            var content = rawMd.split("---meta-end---")[1];
+            var metaKeys = processMetaKeys(meta, ["title", "date", "desc"]);
+            blogJson.push({
+                "title": metaKeys.title,
+                "desc": metaKeys.desc,
+                "published_at": metaKeys.date,
+                "href": blogLocation + "/"
+            });
+            var publishDate = new Date(metaKeys.date);
+
+            var metaTags = '<meta name="description" content="Blog by Sarad Mohanan. See you on the other side :)">\n' +
+                '    <meta name="keywords" content="sarad, mohanan, blog, ' + metaKeys.title.split(' ').join(', ') + '">\n' +
+                '    <meta property="og:title" content="' + metaKeys.title + '" />\n' +
+                '    <meta property="og:url" content="http://sarad.in/' + blogLocation + '/"/>\n' +
+                '    <meta property="og:site_name" content="' + metaKeys.title + '"/>\n' +
+                '    <meta property="og:description" content="' + metaKeys.desc + '"/>\n' +
+                '    <title>Sarad | ' + metaKeys.title + '</title>';
+
+            blogTemplate = blogTemplate.replace("<!--{{ meta_tags }}-->", metaTags);
+            blogTemplate = blogTemplate.replace("<!--{{ blog_title }}-->", metaKeys.title);
+            blogTemplate = blogTemplate.replace("<!--{{ blog_desc }}-->", metaKeys.desc);
+            blogTemplate = blogTemplate.replace("<!--{{ blog_date }}-->", publishDate.toDateString());
+            blogTemplate = blogTemplate.replace("<!--{{ blog_content }}-->", marked(content.trim()));
+            fs.writeFileSync(blogLocation + '/index.html', blogTemplate);
+        });
+        fs.writeFileSync("assets/json/blog_index.json", JSON.stringify(blogJson, null, 4));
+    });
 
     grunt.registerTask('build-cache', 'build cache task', function () {
         var fileHash = {};
@@ -296,67 +360,50 @@ module.exports = function(grunt) {
         })
     });
 
-    grunt.registerTask('lint', [
-        'jshint',
-        'csslint'
-    ]);
+    grunt.registerTask('sitemap', 'build sitemap', function () {
+        var contents = {
+            "url": [
+                "https://sarad.in/",
+                "https://sarad.in/blog/"
+            ],
+            "image": [{
+                "loc": "https://sarad.in/dist/img/sarad.jpeg",
+                "caption": "ME :p",
+                "title": "Sarad Mohanan"
+            }, {
+                "loc": "https://sarad.in/dist/img/mountains.jpg",
+                "caption": "background image",
+                "title": "mountains"
+            }]
+        };
 
-    grunt.registerTask('blog', 'build blog', function () {
-        var blogJson = [];
-        marked.setOptions({
-            renderer: new marked.Renderer(),
-            langPrefix:'hljs ',
-            highlight: function(code, lang) {
-                return hljs.highlight(lang, code).value;
-            },
-            gfm: true,
-            tables: true,
-            breaks: false,
-            pedantic: false,
-            sanitize: false,
-            smartLists: true,
-            smartypants: false,
-            xhtml: false
-        });
-        var blogTemplate = fs.readFileSync('blog/blog_template.html', 'utf8');
-        fs.readdirSync('blog/md/').forEach(function(file) {
+        fs.readdirSync("blog/md/").forEach(function(file) {
             var blogName = file.substring(0, (file.length - 3));
-            var blogLocation = 'blog/' + blogName;
-            if (!fs.existsSync(blogLocation)) {
-                fs.mkdirSync(blogLocation);
-            }
-            fs.writeFileSync(blogLocation + '.html', '<script type="text/javascript">' +
-                'window.location = "/' + blogLocation + '/"' +
-                '</script>');
-
-            var rawMd = fs.readFileSync('blog/md/' + file, 'utf8');
-            var meta = rawMd.split("---meta-end---")[0];
-            var content = rawMd.split("---meta-end---")[1];
-            var metaKeys = processMetaKeys(meta, ["title", "date", "desc"]);
-            blogJson.push({
-                "title": metaKeys.title,
-                "desc": metaKeys.desc,
-                "published_at": metaKeys.date,
-                "href": blogLocation + "/"
-            });
-            var publishDate = new Date(metaKeys.date);
-
-            var metaTags = '<meta name="description" content="Blog by Sarad Mohanan. See you on the other side :)">\n' +
-                '    <meta name="keywords" content="sarad, mohanan, blog, ' + metaKeys.title.split(' ').join(', ') + '">\n' +
-                '    <meta property="og:title" content="' + metaKeys.title + '" />\n' +
-                '    <meta property="og:url" content="http://sarad.in/' + blogLocation + '/"/>\n' +
-                '    <meta property="og:site_name" content="' + metaKeys.title + '"/>\n' +
-                '    <meta property="og:description" content="' + metaKeys.desc + '"/>\n' +
-                '    <title>Sarad | ' + metaKeys.title + '</title>';
-
-            blogTemplate = blogTemplate.replace("<!--{{ meta_tags }}-->", metaTags);
-            blogTemplate = blogTemplate.replace("<!--{{ blog_title }}-->", metaKeys.title);
-            blogTemplate = blogTemplate.replace("<!--{{ blog_desc }}-->", metaKeys.desc);
-            blogTemplate = blogTemplate.replace("<!--{{ blog_date }}-->", publishDate.toDateString());
-            blogTemplate = blogTemplate.replace("<!--{{ blog_content }}-->", marked(content.trim()));
-            fs.writeFileSync(blogLocation + '/index.html', blogTemplate);
+            contents.url.push("https://sarad.in/blog/" + blogName + "/");
         });
-        fs.writeFileSync("assets/json/blog_index.json", JSON.stringify(blogJson, null, 4));
+
+        var siteMapBuilder = xmlBuilder.create("urlset", { encoding: "UTF-8" })
+            .att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
+            .att("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1")
+            .ele("url");
+
+        contents.url.forEach(function (eachUrl) {
+            siteMapBuilder = siteMapBuilder.ele("loc", eachUrl).up();
+        });
+
+        contents.image.forEach(function (eachImage) {
+            siteMapBuilder = siteMapBuilder.ele("image:image");
+            for (var key in eachImage) {
+                if (eachImage.hasOwnProperty(key)) {
+                    siteMapBuilder = siteMapBuilder.ele("image:" + key, eachImage[key]).up();
+                }
+            }
+            siteMapBuilder = siteMapBuilder.up();
+        });
+
+        fs.writeFileSync("sitemap.xml", siteMapBuilder.end({
+            pretty: true
+        }));
     });
 };
 
