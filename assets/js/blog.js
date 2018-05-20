@@ -1,13 +1,16 @@
 var loadBlogIndex = function () {
+    $('.blog-loader-animation').css('display', 'inherit');
     requestJson("blog_index", function (response) {
+        var listContent = "";
         response.forEach(function (eachItem) {
             var publishDate = new Date(eachItem.published_at);
-            var blogItem = '<a href="/' + eachItem.href + '" class="blog-item-link"><div class="item">' +
+            listContent += '<a href="/' + eachItem.href + '" class="blog-item-link"><div class="item">' +
                     '<div class="title">' + eachItem.title + '</div>' +
                     '<div class="sub-title">' + eachItem.desc + '</div>' +
                     '<div class="time">' + publishDate.toDateString() + '</div>' +
                 '</div></a>';
-            $('.blog-index-list-container').prepend($(blogItem));
         });
+        $('.blog-loader-animation').css('display', 'none');
+        $('.blog-index-list-container').prepend($(listContent));
     });
 };
