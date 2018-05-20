@@ -384,11 +384,10 @@ module.exports = function(grunt) {
 
         var siteMapBuilder = xmlBuilder.create("urlset", { encoding: "UTF-8" })
             .att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
-            .att("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1")
-            .ele("url");
+            .att("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1");
 
         contents.url.forEach(function (eachUrl) {
-            siteMapBuilder = siteMapBuilder.ele("loc", eachUrl).up();
+            siteMapBuilder = siteMapBuilder.ele("url").ele("loc", eachUrl).up().up();
         });
 
         contents.image.forEach(function (eachImage) {
